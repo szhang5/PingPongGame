@@ -5,9 +5,9 @@ public class Ball {
 	int m = 1;
 	int n = 1;
 
-	public Ball(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Ball() {
+		this.x = 25;
+		this.y = 15;
 
 	}
 

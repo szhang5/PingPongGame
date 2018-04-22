@@ -2,19 +2,22 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import javax.swing.JPanel;
 
 public class Pingpong extends JPanel implements KeyListener {
 	static int[][] map = new int[50][30];
-	Paddle paddle1 = new Paddle(1, 12);
-	Paddle paddle2 = new Paddle(48, 12);
-	public static Ball ball = new Ball(25, 15);
+	static Paddle p1;
+	static Paddle p2;
+	public static Ball ball = new Ball();
 	public static String message = "";
+	private PrintWriter out;
 
-	public Pingpong() {
+	public Pingpong(PrintWriter pw) {
 		newMap();
 		newPaddle();
+		out = pw;
 	}
 
 	public void newMap() {
@@ -36,71 +39,86 @@ public class Pingpong extends JPanel implements KeyListener {
 	}
 
 	public void newPaddle() {
-
+		p1 = new Paddle(1);
+		p2 = new Paddle(2);
 		for (int i = 0; i < 5; i++) {
-			map[paddle1.position[i].getX()][paddle1.position[i].getY()] = 3;
-			map[paddle2.position[i].getX()][paddle2.position[i].getY()] = 4;
+			map[1][p1.position[i].getY()] = 3;
+			map[48][p2.position[i].getY()] = 4;
 		}
-		// System.out.println(Arrays.deepToString(map));
 	}
 
 	public void LeftUp() {
-		map[paddle1.position[4].getX()][paddle1.position[4].getY()] = 0;
-		paddle1.goUp();
+		for (int i = 1; i < 29; i++) {
+			map[1][i] = 0;
+		}
+		p1.goUp();
 		for (int i = 0; i < 5; i++) {
-			map[paddle1.position[i].getX()][paddle1.position[i].getY()] = 3;
+			map[1][p1.position[i].getY()] = 3;
 		}
 		repaint();
 	}
 
 	public void LeftDown() {
-		map[paddle1.position[0].getX()][paddle1.position[0].getY()] = 0;
-		paddle1.goDown();
+		for (int i = 1; i < 29; i++) {
+			map[1][i] = 0;
+		}
+		p1.goDown();
 		for (int i = 0; i < 5; i++) {
-			map[paddle1.position[i].getX()][paddle1.position[i].getY()] = 3;
+			map[1][p1.position[i].getY()] = 3;
 		}
 		repaint();
 	}
 
 	public void RightUp() {
-		map[paddle2.position[4].getX()][paddle2.position[4].getY()] = 0;
-		paddle2.goUp();
+		for (int i = 1; i < 29; i++) {
+			map[48][i] = 0;
+		}
+		p2.goUp();
 		for (int i = 0; i < 5; i++) {
-			map[paddle2.position[i].getX()][paddle2.position[i].getY()] = 4;
+			map[48][p2.position[i].getY()] = 4;
 		}
 		repaint();
 	}
 
 	public void RightDown() {
-		map[paddle2.position[0].getX()][paddle2.position[0].getY()] = 0;
-		paddle2.goDown();
+		for (int i = 1; i < 29; i++) {
+			map[48][i] = 0;
+		}
+		p2.goDown();
 		for (int i = 0; i < 5; i++) {
-			map[paddle2.position[i].getX()][paddle2.position[i].getY()] = 4;
+			map[48][p2.position[i].getY()] = 4;
 		}
 		repaint();
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e) {
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_W)
+		if (key == KeyEvent.VK_W) {
 			LeftUp();
-		if (key == KeyEvent.VK_S)
-			LeftDown();
-		if (key == KeyEvent.VK_UP)
-			RightUp();
-		if (key == KeyEvent.VK_DOWN)
-			RightDown();
+			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));
+		}
 
+		if (key == KeyEvent.VK_S) {
+			LeftDown();
+			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));
+		}
+			
+		if (key == KeyEvent.VK_UP) {
+			RightUp();
+			out.println("Paddle2 Move: " + Arrays.toString(p2.getPosition()));
+		}
+			
+		if (key == KeyEvent.VK_DOWN) {
+			RightDown();
+			out.println("Paddle2 Move: " + Arrays.toString(p2.getPosition()));
+		}
+			
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -108,7 +126,7 @@ public class Pingpong extends JPanel implements KeyListener {
 		super.paintComponent(g);
 
 		g.setColor(Color.black);
-		
+
 		g.drawString(message, 0, 472);
 
 		for (int i = 0; i < 50; i++) {
@@ -143,4 +161,31 @@ public class Pingpong extends JPanel implements KeyListener {
 			}
 		}
 	}
+
+	public void updatePaddle1(int[] loc) {
+		for (int i = 1; i < 29; i++) {
+			map[1][i] = 0;
+		}
+		for (int i = 0; i < 5; i++) {
+			map[1][loc[i]] = 3;
+		}
+		repaint();
+	}
+
+	public void updatePaddle2(int[] loc) {
+		for (int i = 1; i < 29; i++) {
+			map[48][i] = 0;
+		}
+		for (int i = 0; i < 5; i++) {
+			map[48][loc[i]] = 4;
+		}
+		repaint();
+	}
+	
+	public void updateBall(int[] loc) {
+		ball.setX(loc[0]);
+		ball.setY(loc[1]);
+		repaint();
+	}
+
 }
