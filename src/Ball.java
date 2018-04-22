@@ -33,6 +33,7 @@ public class Ball {
 
 	public void ballMove() {
 		int[][] newMap = Pingpong.getMap();
+
 		x += m;
 		y += n;
 		if (newMap[x][y] == 4) {
@@ -41,11 +42,18 @@ public class Ball {
 		if (newMap[x][y] == 3) {
 			m = 1;
 		}
+		// if (x >= 48) {
+		// m = -m;
+		// }
+		// if (x <= 1) {
+		// m = 1;
+		// }
 		if (y >= 28) {
 			n = -n;
 		}
-		if (y < 1) {
+		if (y <= 1) {
 			n = 1;
 		}
+
 	}
 }
