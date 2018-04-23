@@ -28,7 +28,7 @@ class PingPongClient {
 		frame.addKeyListener(a);
 		frame.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				t = new Timer(70, new TimerListener(a.getBall()));
+				t = new Timer(65, new TimerListener(a.getBall()));
 				t.start();
 			}
 		});

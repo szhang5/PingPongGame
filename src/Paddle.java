@@ -4,11 +4,7 @@ class Paddle {
 
 	private int player, x, y;
 
-	boolean upAccel, downAccel;
-
 	public Paddle(int player) {
-		upAccel = false;
-		downAccel = false;
 		y = 12;
 		if (player == 1)
 			x = 1;
@@ -21,10 +17,10 @@ class Paddle {
 	}
 
 	public void goUp() {
-		if (position[0].getY() > 1) {
+		if (position[0].getY() > 2) {
 			int n = position.length;
 			for (int i = 0; i < n; i++)
-				position[i].setY(position[i].getY() - 1);
+				position[i].setY(position[i].getY() - 2);
 		}
 	}
 
@@ -32,7 +28,7 @@ class Paddle {
 		if (position[4].getY() < 28) {
 			int n = position.length;
 			for (int i = 0; i < n; i++)
-				position[i].setY(position[i].getY() + 1);
+				position[i].setY(position[i].getY() + 2);
 		}
 	}
 
