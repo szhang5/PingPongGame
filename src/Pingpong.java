@@ -10,7 +10,7 @@ public class Pingpong extends JPanel implements KeyListener {
 	static int[][] map = new int[50][30];
 	static Paddle p1;
 	static Paddle p2;
-	public static Ball ball = new Ball();
+	private Ball ball = new Ball();
 	public static String message = "";
 	private PrintWriter out;
 
@@ -20,6 +20,9 @@ public class Pingpong extends JPanel implements KeyListener {
 		out = pw;
 	}
 
+	public Ball getBall() {
+		return ball;
+	}
 	public void newMap() {
 		for (int i = 0; i < 50; i++) {
 			for (int j = 0; j < 30; j++) {

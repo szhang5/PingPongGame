@@ -13,41 +13,37 @@ public class PingPongServer {
 		ServerSocket listener = new ServerSocket(6666);
 		System.out.println("Ping-Pong Server is Running");
 
-		// Socket socket = listener.accept();
 		try {
 			while (true) {
 				Game game = new Game();
-				Game.Player playerB = game.new Player(listener.accept(), 'B', Pingpong.p1);
-				Game.Player playerR = game.new Player(listener.accept(), 'R', Pingpong.p2);
-				playerB.setOpponent(playerR);
-				playerR.setOpponent(playerB);
-				game.currentPlayer = playerB;
-				playerB.start();
-				playerR.start();
+				Game.Player player1 = game.new Player(listener.accept(), '1');
+				Game.Player player2 = game.new Player(listener.accept(), '2');
+				player1.setOpponent(player2);
+				player2.setOpponent(player1);
+				game.currentPlayer = player1;
+				player1.start();
+				player2.start();
 			}
 		} finally {
 			listener.close();
 		}
 	}
-
 }
 
-class Game  {
+class Game {
 
 	Player currentPlayer;
 
-	class Player extends Thread{
+	class Player extends Thread {
 		char mark;
 		Player opponent;
 		Socket socket;
 		BufferedReader input;
 		PrintWriter output;
-		Paddle p;
 
-		public Player(Socket socket, char mark, Paddle p) {
+		public Player(Socket socket, char mark) {
 			this.socket = socket;
 			this.mark = mark;
-			this.p = p;
 			try {
 				input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				output = new PrintWriter(socket.getOutputStream(), true);
@@ -58,56 +54,45 @@ class Game  {
 			}
 		}
 
-		public boolean hasWinner() {
-			boolean result = false;
-			String respone;
-			try {
-				respone = input.readLine();
-				if (respone.equals("GAME OVER")) {
-					result = true;
-				}
-			} catch (Exception e) {
-			}
-			return result;
-
-		}
-
 		public void setOpponent(Player opponent) {
 			this.opponent = opponent;
 		}
 
-		
-
 		public void run() {
-			
+
 			try {
 				output.println("MESSAGE All players connected");
 
-				if (mark == 'B') {
-					output.println("Right Click Your Mouse to Start");
+				if (mark == '1') {
+					output.println("MESSAGE Click Your Mouse to Start");
 				}
-				
 
 				while (true) {
 					String command = input.readLine();
-					
-					if(command.startsWith("Ball Move: ")) {
-						System.out.println(command);
-						moveBall(command);
-					}
 
-					if(command.startsWith("Paddle1 Move: ")) {
-						movePaddle(command);
+					if (command.startsWith("Ball Move: ")) {
+						updateOppnent(command);
 					}
-					if(command.startsWith("Paddle2 Move: ")) {
-						movePaddle(command);
+					if (command.startsWith("Paddle1 Move: ")) {
+						updateOppnent(command);
 					}
-					if(command.startsWith("QUIT"))
+					if (command.startsWith("Paddle2 Move: ")) {
+						updateOppnent(command);
+					}
+					if (command.startsWith("GAME OVER: ")) {
+						output.println(command);
+						updateOppnent(command);
+					}
+					if (command.startsWith("Score: ")) {
+						updateOppnent(command);
+						output.println(command);
+					}
+					if (command.startsWith("QUIT"))
 						break;
-				
+
 				}
 			} catch (IOException e) {
-				System.out.println("Player died: " + e);
+				System.out.println("GameOver " + e);
 			} finally {
 				try {
 					socket.close();
@@ -115,19 +100,14 @@ class Game  {
 				}
 			}
 		}
-		
-		public void movePaddle(String pos) {
+
+		public void updateOppnent(String message) {
 			currentPlayer = this.opponent;
-			currentPlayer.otherPaddleMoved(pos);
+			currentPlayer.otherOppnent(message);
 		}
-		
-		public void moveBall(String pos) {
-			currentPlayer = this.opponent;
-			currentPlayer.otherPaddleMoved(pos);
-		}
-		
-		public void otherPaddleMoved(String location) {
-			output.println(location);
+
+		public void otherOppnent(String message) {
+			output.println(message);
 		}
 	}
 }
