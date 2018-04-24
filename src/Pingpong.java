@@ -23,6 +23,7 @@ public class Pingpong extends JPanel implements KeyListener {
 	public Ball getBall() {
 		return ball;
 	}
+
 	public void newMap() {
 		for (int i = 0; i < 50; i++) {
 			for (int j = 0; j < 30; j++) {
@@ -44,7 +45,7 @@ public class Pingpong extends JPanel implements KeyListener {
 	public void newPaddle() {
 		p1 = new Paddle(1);
 		p2 = new Paddle(2);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][p1.position[i].getY()] = 3;
 			map[48][p2.position[i].getY()] = 4;
 		}
@@ -55,7 +56,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[1][i] = 0;
 		}
 		p1.goUp();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][p1.position[i].getY()] = 3;
 		}
 		repaint();
@@ -66,7 +67,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[1][i] = 0;
 		}
 		p1.goDown();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][p1.position[i].getY()] = 3;
 		}
 		repaint();
@@ -77,7 +78,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[48][i] = 0;
 		}
 		p2.goUp();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[48][p2.position[i].getY()] = 4;
 		}
 		repaint();
@@ -88,7 +89,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[48][i] = 0;
 		}
 		p2.goDown();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[48][p2.position[i].getY()] = 4;
 		}
 		repaint();
@@ -99,26 +100,13 @@ public class Pingpong extends JPanel implements KeyListener {
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_W) {
-			LeftUp();
-			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));
-		}
-
-		if (key == KeyEvent.VK_S) {
-			LeftDown();
-			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));
-		}
-			
+		
 		if (key == KeyEvent.VK_UP) {
-			RightUp();
-			out.println("Paddle2 Move: " + Arrays.toString(p2.getPosition()));
+			out.println("UP");	
 		}
-			
 		if (key == KeyEvent.VK_DOWN) {
-			RightDown();
-			out.println("Paddle2 Move: " + Arrays.toString(p2.getPosition()));
-		}
-			
+			out.println("DOWN");	
+		}		
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -169,7 +157,7 @@ public class Pingpong extends JPanel implements KeyListener {
 		for (int i = 1; i < 29; i++) {
 			map[1][i] = 0;
 		}
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][loc[i]] = 3;
 		}
 		repaint();
@@ -179,16 +167,36 @@ public class Pingpong extends JPanel implements KeyListener {
 		for (int i = 1; i < 29; i++) {
 			map[48][i] = 0;
 		}
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[48][loc[i]] = 4;
 		}
 		repaint();
 	}
-	
+
 	public void updateBall(int[] loc) {
 		ball.setX(loc[0]);
 		ball.setY(loc[1]);
 		repaint();
+	}
+	public void moveUp(String mark) {
+		System.out.println(mark);
+		if(mark.equals("1")) {
+			LeftUp();
+			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));
+		} else if(mark.equals("2")) {
+			RightUp();
+			out.println("Paddle2 Move: " + Arrays.toString(p2.getPosition()));
+		}
+	}
+	
+	public void moveDown(String mark) {
+		if(mark.equals("1")) {
+			LeftDown();
+			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));
+		} else if(mark.equals("2")) {
+			RightDown();
+			out.println("Paddle2 Move: " + Arrays.toString(p2.getPosition()));
+		}
 	}
 
 }
