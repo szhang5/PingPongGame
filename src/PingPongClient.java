@@ -36,7 +36,7 @@ class PingPongClient {
 
 	public static void main(String args[]) throws Exception {
 		while (true) {
-			String serverAddress = "10.163.20.16"; // change this IP address to your server IP address
+			String serverAddress = "127.0.0.1"; // change this IP address to your server IP address
 			PingPongClient client = new PingPongClient(serverAddress);
 			client.frame.setLocationRelativeTo(null);
 			client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
