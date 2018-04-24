@@ -190,7 +190,6 @@ public class Pingpong extends JPanel implements KeyListener {
 	}
 	
 	public void moveDown(String mark) {
-		System.out.println(mark);
 		if(mark.equals("1")) {
 			LeftDown();
 			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));

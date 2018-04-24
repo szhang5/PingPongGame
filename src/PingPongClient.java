@@ -92,12 +92,10 @@ class PingPongClient {
 				response = in.readLine();
 				if (response.startsWith("UP ")) {
 					String player = response.substring(3);
-					System.out.println(response);
 					a.moveUp(player);	
 				}
 				else if (response.startsWith("DOWN ")) {
 					String player = response.substring(5);
-					System.out.println(response);
 					a.moveDown(player);	
 				}
 				else if (response.startsWith("Paddle1 Move: ")) {
