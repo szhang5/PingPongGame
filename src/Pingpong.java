@@ -45,7 +45,7 @@ public class Pingpong extends JPanel implements KeyListener {
 	public void newPaddle() {
 		p1 = new Paddle(1);
 		p2 = new Paddle(2);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][p1.position[i].getY()] = 3;
 			map[48][p2.position[i].getY()] = 4;
 		}
@@ -56,7 +56,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[1][i] = 0;
 		}
 		p1.goUp();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][p1.position[i].getY()] = 3;
 		}
 		repaint();
@@ -67,7 +67,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[1][i] = 0;
 		}
 		p1.goDown();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][p1.position[i].getY()] = 3;
 		}
 		repaint();
@@ -78,7 +78,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[48][i] = 0;
 		}
 		p2.goUp();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[48][p2.position[i].getY()] = 4;
 		}
 		repaint();
@@ -89,7 +89,7 @@ public class Pingpong extends JPanel implements KeyListener {
 			map[48][i] = 0;
 		}
 		p2.goDown();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[48][p2.position[i].getY()] = 4;
 		}
 		repaint();
@@ -157,7 +157,7 @@ public class Pingpong extends JPanel implements KeyListener {
 		for (int i = 1; i < 29; i++) {
 			map[1][i] = 0;
 		}
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[1][loc[i]] = 3;
 		}
 		repaint();
@@ -167,7 +167,7 @@ public class Pingpong extends JPanel implements KeyListener {
 		for (int i = 1; i < 29; i++) {
 			map[48][i] = 0;
 		}
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			map[48][loc[i]] = 4;
 		}
 		repaint();

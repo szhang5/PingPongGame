@@ -1,11 +1,11 @@
 
 class Paddle {
-	Point[] position = new Point[5];
+	Point[] position = new Point[4];
 
-	private int player, x, y;
+	private int x, y;
 
 	public Paddle(int player) {
-		y = 12;
+		y = 13;
 		if (player == 1)
 			x = 1;
 		else
@@ -17,18 +17,18 @@ class Paddle {
 	}
 
 	public void goUp() {
-		if (position[0].getY() > 2) {
-			int n = position.length;
+		int n = position.length;
+		if (position[0].getY() > 1) {
 			for (int i = 0; i < n; i++)
-				position[i].setY(position[i].getY() - 2);
+				position[i].setY(position[i].getY() - 3);
 		}
 	}
 
 	public void goDown() {
-		if (position[4].getY() < 28) {
-			int n = position.length;
+		int n = position.length;
+		if (position[n-1].getY() < 28) {
 			for (int i = 0; i < n; i++)
-				position[i].setY(position[i].getY() + 2);
+				position[i].setY(position[i].getY() + 3);
 		}
 	}
 
