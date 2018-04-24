@@ -91,16 +91,17 @@ class PingPongClient {
 			while (true) {
 				response = in.readLine();
 				if (response.startsWith("UP ")) {
-					String player = response.substring(4);
+					String player = response.substring(3);
+					System.out.println(response);
 					a.moveUp(player);	
 				}
 				else if (response.startsWith("DOWN ")) {
-					String player = response.substring(6);
+					String player = response.substring(5);
+					System.out.println(response);
 					a.moveDown(player);	
 				}
 				else if (response.startsWith("Paddle1 Move: ")) {
 					String paddle1 = response.substring(15, response.length() - 1);
-					System.out.println(paddle1);
 					String[] tmp = paddle1.split(", ");
 					int[] loc = new int[tmp.length];
 					for (int i = 0; i < tmp.length; i++) {
@@ -109,7 +110,6 @@ class PingPongClient {
 					a.updatePaddle1(loc);
 				} else if (response.startsWith("Paddle2 Move: ")) {
 					String paddle2 = response.substring(15, response.length() - 1);
-					System.out.println(paddle2);
 					String[] tmp = paddle2.split(", ");
 					int[] loc = new int[tmp.length];
 					for (int i = 0; i < tmp.length; i++) {
@@ -118,7 +118,6 @@ class PingPongClient {
 					a.updatePaddle2(loc);
 				} else if (response.startsWith("Ball Move: ")) {
 					String ball = response.substring(11);
-					System.out.println(ball);
 					String[] tmp = ball.split(" ");
 					int[] loc = new int[tmp.length];
 					for (int i = 0; i < tmp.length; i++) {
