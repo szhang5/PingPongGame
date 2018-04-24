@@ -77,10 +77,8 @@ class PingPongClient {
 					score1++;
 				if (b.getX() < 1)
 					score2++;
-				if (score1 < 3 && score2 < 3) {
-					System.out.println(score1 + " : " + score2);
-					out.println("Score: Player 1 : Player 2 = " + score1 + " : " + score2);
-				}	
+				if (score1 < 3 && score2 < 3) 
+					out.println("Score: Player 1 : Player 2 = " + score1 + " : " + score2);				
 				else if (score1 == 3)
 					out.println("GAME OVER: Player 1 win");
 				else if (score2 == 3)
@@ -140,6 +138,9 @@ class PingPongClient {
 					Pingpong.message = response.substring(8);
 					frame.repaint();
 				} else if (response.startsWith("Score: ")) {
+					score1 = Integer.parseInt(response.substring(29, 30));
+					score2 = Integer.parseInt(response.substring(33));
+					System.out.println(score1 + ":" + score2);
 					a.getBall().setX(25);
 					a.getBall().setY(15);
 					Pingpong.message = response.substring(7);
