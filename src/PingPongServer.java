@@ -69,7 +69,13 @@ class Game {
 
 				while (true) {
 					String command = input.readLine();
-
+					
+					if (command.equals("UP")) {
+						output.println("UP " + this.mark);
+					}
+					if (command.equals("DOWN")) {
+						output.println("DOWN " + this.mark);
+					}
 					if (command.startsWith("Ball Move: ")) {
 						updateOppnent(command);
 					}

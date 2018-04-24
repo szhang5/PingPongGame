@@ -90,8 +90,15 @@ class PingPongClient {
 			}
 			while (true) {
 				response = in.readLine();
-
-				if (response.startsWith("Paddle1 Move: ")) {
+				if (response.startsWith("UP ")) {
+					String player = response.substring(4);
+					a.moveUp(player);	
+				}
+				else if (response.startsWith("DOWN ")) {
+					String player = response.substring(6);
+					a.moveDown(player);	
+				}
+				else if (response.startsWith("Paddle1 Move: ")) {
 					String paddle1 = response.substring(15, response.length() - 1);
 					System.out.println(paddle1);
 					String[] tmp = paddle1.split(", ");
