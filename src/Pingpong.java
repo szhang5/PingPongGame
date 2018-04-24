@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -7,12 +8,17 @@ import java.util.Arrays;
 import javax.swing.JPanel;
 
 public class Pingpong extends JPanel implements KeyListener {
-	static int[][] map = new int[50][30];
+	
+	private static final int W = 50;
+	private static final int H = 30;
+	private static int[][] map = new int[W][H];
+	
 	static Paddle p1;
 	static Paddle p2;
 	private Ball ball = new Ball();
 	public static String message = "";
-	private PrintWriter out;
+	private Font font = new Font("TimesRoman",Font.BOLD,20);
+	private PrintWriter out; 
 
 	public Pingpong(PrintWriter pw) {
 		newMap();
@@ -24,24 +30,39 @@ public class Pingpong extends JPanel implements KeyListener {
 		return ball;
 	}
 
+	public int getH() {
+		return H;
+	}
+
+	public int getW() {
+		return W;
+	}
+	
+	//************************//
+	// - Map Initialization - //
+	//************************//
 	public void newMap() {
-		for (int i = 0; i < 50; i++) {
-			for (int j = 0; j < 30; j++) {
-				if (i == 0 || i == 49 || j == 0 || j == 29)
-					map[i][j] = 1; // 1 stands for wall;
-				else if (i == 25 && j % 2 == 0)
+		for (int i = 0; i < W; i++) {
+			for (int j = 0; j < H; j++) {
+				if (i == 0 || i == W-1 || j == 0 || j == H-1)
+					/* - 1 stands for wall - */
+					map[i][j] = 1; 
+				else if (i == (W/2) && j % 2 == 0)
+					/* - 2 stands for middle line - */
 					map[i][j] = 2;
 				else
 					map[i][j] = 0;
 			}
 		}
-		// System.out.println(Arrays.deepToString(map));
 	}
 
 	public static int[][] getMap() {
 		return map;
 	}
 
+	//***************************//
+	// - Paddle Initialization - //
+	//***************************//
 	public void newPaddle() {
 		p1 = new Paddle(1);
 		p2 = new Paddle(2);
@@ -51,8 +72,11 @@ public class Pingpong extends JPanel implements KeyListener {
 		}
 	}
 
+	//**********************//
+	// - Paddle 1 Move Up - //
+	//**********************//
 	public void LeftUp() {
-		for (int i = 1; i < 29; i++) {
+		for (int i = 1; i < H-1; i++) {
 			map[1][i] = 0;
 		}
 		p1.goUp();
@@ -61,9 +85,12 @@ public class Pingpong extends JPanel implements KeyListener {
 		}
 		repaint();
 	}
-
+	
+	//************************//
+	// - Paddle 1 Move Down - //
+	//************************//
 	public void LeftDown() {
-		for (int i = 1; i < 29; i++) {
+		for (int i = 1; i < H-1; i++) {
 			map[1][i] = 0;
 		}
 		p1.goDown();
@@ -73,8 +100,11 @@ public class Pingpong extends JPanel implements KeyListener {
 		repaint();
 	}
 
+	//**********************//
+	// - Paddle 2 Move Up - //
+	//**********************//
 	public void RightUp() {
-		for (int i = 1; i < 29; i++) {
+		for (int i = 1; i < H-1; i++) {
 			map[48][i] = 0;
 		}
 		p2.goUp();
@@ -84,8 +114,11 @@ public class Pingpong extends JPanel implements KeyListener {
 		repaint();
 	}
 
+	//************************//
+	// - Paddle 2 Move Down - //
+	//************************//
 	public void RightDown() {
-		for (int i = 1; i < 29; i++) {
+		for (int i = 1; i < H-1; i++) {
 			map[48][i] = 0;
 		}
 		p2.goDown();
@@ -95,6 +128,9 @@ public class Pingpong extends JPanel implements KeyListener {
 		repaint();
 	}
 
+	//*****************//
+	// - KeyListener - //
+	//*****************//
 	public void keyTyped(KeyEvent e) {
 	}
 
@@ -113,31 +149,39 @@ public class Pingpong extends JPanel implements KeyListener {
 
 	}
 
+	//*********************//
+	// - Paint Component - //
+	//*********************//
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		g.setColor(Color.black);
 
+		g.setFont(font);
 		g.drawString(message, 0, 472);
 
-		for (int i = 0; i < 50; i++) {
-			for (int j = 0; j < 30; j++) {
+		for (int i = 0; i < W; i++) {
+			for (int j = 0; j < H; j++) {
 				if (map[i][j] == 0) {
 					g.fillRect(i * 15, j * 15, 15, 15);
 				}
+				/* - 1 stands for wall - */
 				if (map[i][j] == 1) {
 					g.setColor(Color.DARK_GRAY);
 					g.fillRect(i * 15, j * 15, 15, 15);
 					g.setColor(Color.black);
 				}
+				/* - 2 stands for middle line - */
 				if (map[i][j] == 2) {
 					g.fillRect(i * 15, j * 15, 10, 15);
 				}
+				/* - 3 stands for Paddle 1 - */
 				if (map[i][j] == 3) {
 					g.setColor(Color.cyan);
 					g.fillRect(i * 15, j * 15, 15, 15);
 					g.setColor(Color.black);
 				}
+				/* - 4 stands for Paddle 2 - */
 				if (map[i][j] == 4) {
 					g.setColor(Color.red);
 					g.fillRect(i * 15, j * 15, 15, 15);
@@ -153,8 +197,11 @@ public class Pingpong extends JPanel implements KeyListener {
 		}
 	}
 
+	//**********************//
+	// - Update Component - //
+	//**********************//
 	public void updatePaddle1(int[] loc) {
-		for (int i = 1; i < 29; i++) {
+		for (int i = 1; i < H-1; i++) {
 			map[1][i] = 0;
 		}
 		for (int i = 0; i < 4; i++) {
@@ -164,7 +211,7 @@ public class Pingpong extends JPanel implements KeyListener {
 	}
 
 	public void updatePaddle2(int[] loc) {
-		for (int i = 1; i < 29; i++) {
+		for (int i = 1; i < H-1; i++) {
 			map[48][i] = 0;
 		}
 		for (int i = 0; i < 4; i++) {
@@ -178,8 +225,11 @@ public class Pingpong extends JPanel implements KeyListener {
 		ball.setY(loc[1]);
 		repaint();
 	}
+	
+	//************************//
+	// - Update Player Move - //
+	//************************//
 	public void moveUp(String mark) {
-		System.out.println(mark);
 		if(mark.equals("1")) {
 			LeftUp();
 			out.println("Paddle1 Move: " + Arrays.toString(p1.getPosition()));

@@ -16,6 +16,9 @@ class Paddle {
 		}
 	}
 
+	//********************//
+	// - Paddle Move Up - //
+	//********************//
 	public void goUp() {
 		int n = position.length;
 		if (position[0].getY() > 1) {
@@ -24,6 +27,9 @@ class Paddle {
 		}
 	}
 
+	//**********************//
+	// - Paddle Move Down - //
+	//**********************//
 	public void goDown() {
 		int n = position.length;
 		if (position[n-1].getY() < 28) {

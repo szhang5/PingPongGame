@@ -18,9 +18,13 @@ public class PingPongServer {
 				Game game = new Game();
 				Game.Player player1 = game.new Player(listener.accept(), '1');
 				Game.Player player2 = game.new Player(listener.accept(), '2');
+				
+				/*set opponent*/
 				player1.setOpponent(player2);
 				player2.setOpponent(player1);
 				game.currentPlayer = player1;
+				
+				/*start thread*/
 				player1.start();
 				player2.start();
 			}
@@ -61,12 +65,12 @@ class Game {
 		public void run() {
 
 			try {
-				output.println("MESSAGE All players connected");
-
-				
+				output.println("MESSAGE All players connected");	
 				output.println("MESSAGE Click Your Mouse to Start");
-				
 
+				//******************************************//
+				// - Server receives request from clients - //
+				//******************************************//
 				while (true) {
 					String command = input.readLine();
 					
@@ -107,6 +111,9 @@ class Game {
 			}
 		}
 
+		//***************************************************************************//
+		// - Server receives request from client but response to client's opponent - //
+		//***************************************************************************//
 		public void updateOppnent(String message) {
 			currentPlayer = this.opponent;
 			currentPlayer.otherOppnent(message);
