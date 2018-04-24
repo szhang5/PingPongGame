@@ -63,9 +63,9 @@ class Game {
 			try {
 				output.println("MESSAGE All players connected");
 
-				if (mark == '1') {
-					output.println("MESSAGE Click Your Mouse to Start");
-				}
+				
+				output.println("MESSAGE Click Your Mouse to Start");
+				
 
 				while (true) {
 					String command = input.readLine();

@@ -28,7 +28,7 @@ class PingPongClient {
 		frame.addKeyListener(a);
 		frame.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				t = new Timer(65, new TimerListener(a.getBall()));
+				t = new Timer(100, new TimerListener(a.getBall()));
 				t.start();
 			}
 		});
@@ -36,7 +36,7 @@ class PingPongClient {
 
 	public static void main(String args[]) throws Exception {
 		while (true) {
-			String serverAddress = (args.length == 0) ? "localhost" : args[1];
+			String serverAddress = "10.163.20.16"; // change this IP address to your server IP address
 			PingPongClient client = new PingPongClient(serverAddress);
 			client.frame.setLocationRelativeTo(null);
 			client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
