@@ -67,6 +67,7 @@ class Game {
 			try {
 				output.println("MESSAGE All players connected");	
 				output.println("MESSAGE Click Your Mouse to Start");
+				
 
 				//******************************************//
 				// - Server receives request from clients - //
@@ -79,6 +80,10 @@ class Game {
 					}
 					if (command.equals("DOWN")) {
 						output.println("DOWN " + this.mark);
+					}
+					if(command.equals("Mouse Click")) {
+						updateOppnent(command);
+						output.println(command);
 					}
 					if (command.startsWith("Ball Move: ")) {
 						updateOppnent(command);
@@ -102,7 +107,7 @@ class Game {
 
 				}
 			} catch (IOException e) {
-				System.out.println("GameOver " + e);
+				System.out.println("GAME OVER " + e);
 			} finally {
 				try {
 					socket.close();
