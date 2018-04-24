@@ -23,13 +23,14 @@ class PingPongClient {
 		socket = new Socket(serverAddress, PORT);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
-		a = new Pingpong(out); 
+		a = new Pingpong(out, score1, score2); 
 		frame.add(a);
 		frame.addKeyListener(a);
 		
 		/* - Mouse Listener - */
 		frame.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				out.println("Mouse Click");
 				if(a.getBall().getX() == a.getW()/2) {
 					t = new Timer(100, new TimerListener(a.getBall()));
 					t.start();
@@ -77,11 +78,11 @@ class PingPongClient {
 					score1++;
 				if (b.getX() < 1)
 					score2++;
-				if (score1 < 3 && score2 < 3) 
+				if (score1 <= 3 && score2 <= 3) 
 					out.println("Score: Player 1 : Player 2 = " + score1 + " : " + score2);				
-				else if (score1 == 3)
+				if (score1 == 3)
 					out.println("GAME OVER: Player 1 win");
-				else if (score2 == 3)
+				if (score2 == 3)
 					out.println("GAME OVER: Player 2 win");
 				t.stop();
 			}
@@ -110,6 +111,10 @@ class PingPongClient {
 				}else if (response.startsWith("DOWN ")) {
 					String player = response.substring(5);
 					a.moveDown(player);	
+					
+				}else if (response.equals("Mouse Click")) {
+					Pingpong.message = "";
+					frame.repaint();
 				}else if (response.startsWith("Paddle1 Move: ")) {
 					String paddle1 = response.substring(15, response.length() - 1);
 					String[] tmp = paddle1.split(", ");
@@ -140,10 +145,11 @@ class PingPongClient {
 				} else if (response.startsWith("Score: ")) {
 					score1 = Integer.parseInt(response.substring(29, 30));
 					score2 = Integer.parseInt(response.substring(33));
-					System.out.println(score1 + ":" + score2);
+					a.updateScore(score1, score2);
+//					System.out.println(score1 + ":" + score2);
 					a.getBall().setX(25);
 					a.getBall().setY(15);
-					Pingpong.message = response.substring(7);
+					Pingpong.message = "Click your mouse to start";
 					frame.repaint();
 				} else if (response.startsWith("GAME OVER: ")) {
 					Pingpong.message = response;

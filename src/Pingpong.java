@@ -17,13 +17,18 @@ public class Pingpong extends JPanel implements KeyListener {
 	static Paddle p2;
 	private Ball ball = new Ball();
 	public static String message = "";
-	private Font font = new Font("TimesRoman",Font.BOLD,20);
+	private Font mFont = new Font("TimesRoman",Font.BOLD,20);
+	private Font sFont = new Font("Arial",Font.BOLD,50);
 	private PrintWriter out; 
+	int score1;
+	int score2;
 
-	public Pingpong(PrintWriter pw) {
+	public Pingpong(PrintWriter pw, int s1, int s2) {
 		newMap();
 		newPaddle();
 		out = pw;
+		score1 = s1;
+		score2 = s2;
 	}
 
 	public Ball getBall() {
@@ -157,9 +162,9 @@ public class Pingpong extends JPanel implements KeyListener {
 
 		g.setColor(Color.black);
 
-		g.setFont(font);
+		g.setFont(mFont);
 		g.drawString(message, 0, 472);
-
+		
 		for (int i = 0; i < W; i++) {
 			for (int j = 0; j < H; j++) {
 				if (map[i][j] == 0) {
@@ -195,6 +200,10 @@ public class Pingpong extends JPanel implements KeyListener {
 
 			}
 		}
+		g.setColor(Color.green);
+		g.setFont(sFont);
+		g.drawString(Integer.toString(score1), 180, 100);
+		g.drawString(Integer.toString(score2), 570, 100);
 	}
 
 	//**********************//
@@ -247,6 +256,14 @@ public class Pingpong extends JPanel implements KeyListener {
 			RightDown();
 			out.println("Paddle2 Move: " + Arrays.toString(p2.getPosition()));
 		}
+	}
+	
+	//******************//
+	// - Update Score - //
+	//******************//
+	public void updateScore(int s1, int s2) {
+		score1 = s1;
+		score2 = s2;
 	}
 
 }
