@@ -261,8 +261,10 @@ public class Pingpong extends JPanel implements KeyListener {
 	//******************//
 	// - Update Score - //
 	//******************//
-	public void updateScore(int s1, int s2) {
+	public void updateScore1(int s1) {
 		score1 = s1;
+	}
+	public void updateScore2(int s2) {
 		score2 = s2;
 	}
 
