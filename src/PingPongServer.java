@@ -41,6 +41,7 @@ class Game {
 	class Player extends Thread {
 		char mark;
 		int score;
+		String nickName;
 		Player opponent;
 		Socket socket;
 		BufferedReader input;
@@ -76,7 +77,28 @@ class Game {
 				//******************************************//
 				while (true) {
 					String command = input.readLine();
-					
+					if(command.startsWith("NICKNAME: 1")) {
+						if(this.mark == '1') {
+							this.nickName = command.substring(11);
+							output.println("NickName: 1" + this.nickName);
+							updateOppnent("NickName: 1" + this.nickName);
+						} else if(this.mark == 2) {
+							this.opponent.nickName = command.substring(11);
+							output.println("NickName: 1" + this.opponent.nickName);
+							updateOppnent("NickName: 1" + this.opponent.nickName);
+						}
+					}
+					if(command.startsWith("NICKNAME: 2")) {
+						if(this.mark == '2') {
+							this.nickName = command.substring(11);
+							output.println("NickName: 2" + this.nickName);
+							updateOppnent("NickName: 2" + this.nickName);
+						} else if(this.mark == 1) {
+							this.opponent.nickName = command.substring(11);
+							output.println("NickName: 2" + this.opponent.nickName);
+							updateOppnent("NickName: 2" + this.opponent.nickName);
+						}
+					}
 					if (command.equals("UP")) {
 						output.println("UP " + this.mark);
 					}
@@ -101,7 +123,6 @@ class Game {
 						updateOppnent(command);
 					}
 					if (command.equals("Player1 get one point")) {
-						System.out.println("in player1 " + mark);
 						if(this.mark == '1') {
 							this.score++;
 							updateOppnent("Player1: " + this.score);
@@ -114,7 +135,6 @@ class Game {
 						checkWinner();
 					}
 					if (command.equals("Player2 get one point")) {
-						System.out.println("in player2 " + mark);
 						if(this.mark == '2') {
 							this.score++;
 							updateOppnent("Player2: " + this.score);

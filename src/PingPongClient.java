@@ -18,6 +18,8 @@ class PingPongClient {
 	private Pingpong a;
 	private int score1 = 0;
 	private int score2 = 0;
+	private static String serverIP;
+	private static String nickName;
 
 	public PingPongClient(String serverAddress) throws Exception {
 		socket = new Socket(serverAddress, PORT);
@@ -41,10 +43,9 @@ class PingPongClient {
 
 	public static void main(String args[]) throws Exception {
 		while (true) {
-			/* - Change "127.0.0.1" to your server IP address - */
-			String serverAddress = "127.0.0.1"; 
-			PingPongClient client = new PingPongClient(serverAddress);
-			
+			nickName = JOptionPane.showInputDialog(null, "Nick name:", "Enter server name:", 1);
+			serverIP = JOptionPane.showInputDialog(null, "ex. 127.0.0.1", "Enter server IP:", 1);
+			PingPongClient client = new PingPongClient(serverIP);
 			/* - JFrame Setting - */
 			client.frame.setLocationRelativeTo(null);
 			client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,11 +95,20 @@ class PingPongClient {
 			response = in.readLine();
 			if (response.startsWith("WELCOME")) {
 				char mark = response.charAt(8);
+				out.println("NICKNAME: " + mark + nickName);
 				System.out.println(response);
 				frame.setTitle("Ping-Pong Game Player " + mark);
 			}
 			while (true) {
 				response = in.readLine();
+				if (response.startsWith("NickName: 1")) {
+					String name = response.substring(11);
+					a.updatePlayerName1(name);
+				}
+				if (response.startsWith("NickName: 2")) {
+					String name = response.substring(11);
+					a.updatePlayerName2(name);
+				}
 				if (response.startsWith("UP ")) {
 					String player = response.substring(3);
 					a.moveUp(player);	
