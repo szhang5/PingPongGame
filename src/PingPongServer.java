@@ -16,8 +16,8 @@ public class PingPongServer {
 		try {
 			while (true) {
 				Game game = new Game();
-				Game.Player player1 = game.new Player(listener.accept(), '1');
-				Game.Player player2 = game.new Player(listener.accept(), '2');
+				Game.Player player1 = game.new Player(listener.accept(), '1', 0);
+				Game.Player player2 = game.new Player(listener.accept(), '2', 0);
 				
 				/*set opponent*/
 				player1.setOpponent(player2);
@@ -40,14 +40,16 @@ class Game {
 
 	class Player extends Thread {
 		char mark;
+		int score;
 		Player opponent;
 		Socket socket;
 		BufferedReader input;
 		PrintWriter output;
 
-		public Player(Socket socket, char mark) {
+		public Player(Socket socket, char mark, int score) {
 			this.socket = socket;
 			this.mark = mark;
+			this.score = score;
 			try {
 				input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				output = new PrintWriter(socket.getOutputStream(), true);
@@ -98,13 +100,34 @@ class Game {
 						output.println(command);
 						updateOppnent(command);
 					}
-					if (command.startsWith("Score: ")) {
-						updateOppnent(command);
-						output.println(command);
+					if (command.equals("Player1 get one point")) {
+						System.out.println("in player1 " + mark);
+						if(this.mark == '1') {
+							this.score++;
+							updateOppnent("Player1: " + this.score);
+							output.println("Player1: " + this.score);
+						} else {
+							this.opponent.score++;
+							updateOppnent("Player1: " + this.opponent.score);
+							output.println("Player1: " + this.opponent.score);
+						}
+						checkWinner();
+					}
+					if (command.equals("Player2 get one point")) {
+						System.out.println("in player2 " + mark);
+						if(this.mark == '2') {
+							this.score++;
+							updateOppnent("Player2: " + this.score);
+							output.println("Player2: " + this.score);
+						} else {
+							this.opponent.score++;
+							updateOppnent("Player2: " + this.opponent.score);
+							output.println("Player2: " + this.opponent.score);
+						}
+						checkWinner();
 					}
 					if (command.startsWith("QUIT"))
 						break;
-
 				}
 			} catch (IOException e) {
 				System.out.println("GAME OVER " + e);
@@ -126,6 +149,16 @@ class Game {
 
 		public void otherOppnent(String message) {
 			output.println(message);
+		}
+		
+		public void checkWinner() {
+			if(this.score == 3) {
+				updateOppnent("You Lose!");
+				output.println("You Win!");
+			}else if(this.opponent.score == 3) {
+				updateOppnent("You Win!");
+				output.println("You Lose!");
+			}
 		}
 	}
 }

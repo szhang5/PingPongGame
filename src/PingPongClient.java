@@ -32,7 +32,7 @@ class PingPongClient {
 			public void mousePressed(MouseEvent e) {
 				out.println("Mouse Click");
 				if(a.getBall().getX() == a.getW()/2) {
-					t = new Timer(100, new TimerListener(a.getBall()));
+					t = new Timer(70, new TimerListener(a.getBall()));
 					t.start();
 				}
 			}
@@ -74,16 +74,10 @@ class PingPongClient {
 				b.ballMove();
 				out.println("Ball Move: " + b.getX() + " " + b.getY());
 			} catch (Exception ee) {
-				if (b.getX() > a.getW()-1)
-					score1++;
-				if (b.getX() < 1)
-					score2++;
-				if (score1 <= 3 && score2 <= 3) 
-					out.println("Score: Player 1 : Player 2 = " + score1 + " : " + score2);				
-				if (score1 == 3)
-					out.println("GAME OVER: Player 1 win");
-				if (score2 == 3)
-					out.println("GAME OVER: Player 2 win");
+				if (b.getX() > a.getW()-1) 
+					out.println("Player1 get one point");
+				if (b.getX() < 1) 
+					out.println("Player2 get one point");
 				t.stop();
 			}
 			frame.repaint();
@@ -142,16 +136,25 @@ class PingPongClient {
 				} else if (response.startsWith("MESSAGE")) {
 					Pingpong.message = response.substring(8);
 					frame.repaint();
-				} else if (response.startsWith("Score: ")) {
-					score1 = Integer.parseInt(response.substring(29, 30));
-					score2 = Integer.parseInt(response.substring(33));
-					a.updateScore(score1, score2);
-//					System.out.println(score1 + ":" + score2);
+				} else if(response.startsWith("Player1: ")) {
+					score1 = Integer.parseInt(response.substring(9));
+					a.updateScore1(score1);
 					a.getBall().setX(25);
 					a.getBall().setY(15);
 					Pingpong.message = "Click your mouse to start";
 					frame.repaint();
-				} else if (response.startsWith("GAME OVER: ")) {
+				} else if(response.startsWith("Player2: ")) {
+					score2 = Integer.parseInt(response.substring(9));
+					a.updateScore2(score2);
+					a.getBall().setX(25);
+					a.getBall().setY(15);
+					Pingpong.message = "Click your mouse to start";
+					frame.repaint();
+				} else if (response.equals("You Win!")) {
+					Pingpong.message = response;
+					frame.repaint();
+					break;
+				}else if (response.equals("You Lose!")) {
 					Pingpong.message = response;
 					frame.repaint();
 					break;
