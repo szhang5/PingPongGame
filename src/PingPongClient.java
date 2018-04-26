@@ -1,11 +1,9 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.Time;
 
 class PingPongClient {
 	private JFrame frame = new JFrame("Pingpong Game");
@@ -43,6 +41,7 @@ class PingPongClient {
 
 	public static void main(String args[]) throws Exception {
 		while (true) {
+			/* - JOptionPane - */
 			serverIP = JOptionPane.showInputDialog(null, "ex. 127.0.0.1", "Enter server IP:", 1);
 			nickName = JOptionPane.showInputDialog(null, "Nick name:", "Enter server name:", 1);
 			PingPongClient client = new PingPongClient(serverIP);
@@ -146,9 +145,7 @@ class PingPongClient {
 					Pingpong.message = response.substring(8);
 					frame.repaint();
 				} else if (response.startsWith("Player ")) {
-					System.out.println(response);
 					char tmp = response.charAt(7);
-					System.out.println(tmp);
 					if (tmp == '1') {
 						score1 = Integer.parseInt(response.substring(8));
 						a.updateScore1(score1);
