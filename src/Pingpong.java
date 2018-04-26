@@ -26,6 +26,7 @@ public class Pingpong extends JPanel implements KeyListener {
 	String player1 = "";
 	String player2 = "";
 
+
 	public Pingpong(PrintWriter pw, int s1, int s2) {
 		newMap();
 		newPaddle();
@@ -287,5 +288,6 @@ public class Pingpong extends JPanel implements KeyListener {
 	public void updatePlayerName2(String name2) {
 		player2 += name2;
 	}
+	
 
 }
