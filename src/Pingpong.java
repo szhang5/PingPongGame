@@ -277,6 +277,9 @@ public class Pingpong extends JPanel implements KeyListener {
 		score2 = s2;
 	}
 	
+	//**********************//
+	// - Update Nick Name - //
+	//**********************//
 	public void updatePlayerName1(String name1) {
 		player1 += name1;
 		

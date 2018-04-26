@@ -82,7 +82,7 @@ class Game {
 							this.nickName = command.substring(11);
 							output.println("NickName: 1" + this.nickName);
 							updateOppnent("NickName: 1" + this.nickName);
-						} else if(this.mark == 2) {
+						} else if(this.mark == '2') {
 							this.opponent.nickName = command.substring(11);
 							output.println("NickName: 1" + this.opponent.nickName);
 							updateOppnent("NickName: 1" + this.opponent.nickName);
@@ -93,7 +93,7 @@ class Game {
 							this.nickName = command.substring(11);
 							output.println("NickName: 2" + this.nickName);
 							updateOppnent("NickName: 2" + this.nickName);
-						} else if(this.mark == 1) {
+						} else if(this.mark == '1') {
 							this.opponent.nickName = command.substring(11);
 							output.println("NickName: 2" + this.opponent.nickName);
 							updateOppnent("NickName: 2" + this.opponent.nickName);

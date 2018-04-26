@@ -43,8 +43,8 @@ class PingPongClient {
 
 	public static void main(String args[]) throws Exception {
 		while (true) {
-			nickName = JOptionPane.showInputDialog(null, "Nick name:", "Enter server name:", 1);
 			serverIP = JOptionPane.showInputDialog(null, "ex. 127.0.0.1", "Enter server IP:", 1);
+			nickName = JOptionPane.showInputDialog(null, "Nick name:", "Enter server name:", 1);
 			PingPongClient client = new PingPongClient(serverIP);
 			/* - JFrame Setting - */
 			client.frame.setLocationRelativeTo(null);
