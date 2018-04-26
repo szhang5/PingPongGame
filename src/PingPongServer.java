@@ -41,6 +41,7 @@ class Game {
 	class Player extends Thread {
 		char mark;
 		int score;
+		String nickName;
 		Player opponent;
 		Socket socket;
 		BufferedReader input;
@@ -76,7 +77,18 @@ class Game {
 				//******************************************//
 				while (true) {
 					String command = input.readLine();
-					
+					if(command.startsWith("NICKNAME: ")) {
+						char tmp = command.charAt(10);
+						if(this.mark == tmp) {
+							this.nickName = command.substring(11);
+							output.println("NickName: " + tmp + this.nickName);
+							updateOppnent("NickName: " + tmp + this.nickName);
+						} else {
+							this.opponent.nickName = command.substring(11);
+							output.println("NickName: " + tmp + this.opponent.nickName);
+							updateOppnent("NickName: " + tmp + this.opponent.nickName);
+						}
+					}
 					if (command.equals("UP")) {
 						output.println("UP " + this.mark);
 					}
@@ -100,29 +112,16 @@ class Game {
 						output.println(command);
 						updateOppnent(command);
 					}
-					if (command.equals("Player1 get one point")) {
-						System.out.println("in player1 " + mark);
-						if(this.mark == '1') {
+					if (command.startsWith("Player ")) {
+						char tmp = command.charAt(7);
+						if(this.mark == tmp) {
 							this.score++;
-							updateOppnent("Player1: " + this.score);
-							output.println("Player1: " + this.score);
+							updateOppnent("Player " + tmp + this.score);
+							output.println("Player " + tmp + this.score);
 						} else {
 							this.opponent.score++;
-							updateOppnent("Player1: " + this.opponent.score);
-							output.println("Player1: " + this.opponent.score);
-						}
-						checkWinner();
-					}
-					if (command.equals("Player2 get one point")) {
-						System.out.println("in player2 " + mark);
-						if(this.mark == '2') {
-							this.score++;
-							updateOppnent("Player2: " + this.score);
-							output.println("Player2: " + this.score);
-						} else {
-							this.opponent.score++;
-							updateOppnent("Player2: " + this.opponent.score);
-							output.println("Player2: " + this.opponent.score);
+							updateOppnent("Player " + tmp + this.opponent.score);
+							output.println("Player " + tmp + this.opponent.score);
 						}
 						checkWinner();
 					}
@@ -151,6 +150,9 @@ class Game {
 			output.println(message);
 		}
 		
+		//******************//
+		// - Check Winner - //
+		//******************//
 		public void checkWinner() {
 			if(this.score == 3) {
 				updateOppnent("You Lose!");

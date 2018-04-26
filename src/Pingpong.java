@@ -19,9 +19,13 @@ public class Pingpong extends JPanel implements KeyListener {
 	public static String message = "";
 	private Font mFont = new Font("TimesRoman",Font.BOLD,20);
 	private Font sFont = new Font("Arial",Font.BOLD,50);
+	private Font nFont = new Font("Arial",Font.BOLD,30);
 	private PrintWriter out; 
 	int score1;
 	int score2;
+	String player1 = "";
+	String player2 = "";
+
 
 	public Pingpong(PrintWriter pw, int s1, int s2) {
 		newMap();
@@ -204,6 +208,12 @@ public class Pingpong extends JPanel implements KeyListener {
 		g.setFont(sFont);
 		g.drawString(Integer.toString(score1), 180, 100);
 		g.drawString(Integer.toString(score2), 570, 100);
+		
+		g.setColor(Color.pink);
+		g.setFont(nFont);
+		g.drawString(player1, 150, 350);
+		g.drawString(player2, 530, 350);
+		
 	}
 
 	//**********************//
@@ -267,5 +277,17 @@ public class Pingpong extends JPanel implements KeyListener {
 	public void updateScore2(int s2) {
 		score2 = s2;
 	}
+	
+	//**********************//
+	// - Update Nick Name - //
+	//**********************//
+	public void updatePlayerName1(String name1) {
+		player1 += name1;
+		
+	}
+	public void updatePlayerName2(String name2) {
+		player2 += name2;
+	}
+	
 
 }

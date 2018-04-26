@@ -18,20 +18,22 @@ class PingPongClient {
 	private Pingpong a;
 	private int score1 = 0;
 	private int score2 = 0;
+	private static String serverIP;
+	public static String nickName;
 
 	public PingPongClient(String serverAddress) throws Exception {
 		socket = new Socket(serverAddress, PORT);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
-		a = new Pingpong(out, score1, score2); 
+		a = new Pingpong(out, score1, score2);
 		frame.add(a);
 		frame.addKeyListener(a);
-		
+
 		/* - Mouse Listener - */
 		frame.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				out.println("Mouse Click");
-				if(a.getBall().getX() == a.getW()/2) {
+				if (a.getBall().getX() == a.getW() / 2) {
 					t = new Timer(70, new TimerListener(a.getBall()));
 					t.start();
 				}
@@ -41,17 +43,16 @@ class PingPongClient {
 
 	public static void main(String args[]) throws Exception {
 		while (true) {
-			/* - Change "127.0.0.1" to your server IP address - */
-			String serverAddress = "127.0.0.1"; 
-			PingPongClient client = new PingPongClient(serverAddress);
-			
+			serverIP = JOptionPane.showInputDialog(null, "ex. 127.0.0.1", "Enter server IP:", 1);
+			nickName = JOptionPane.showInputDialog(null, "Nick name:", "Enter server name:", 1);
+			PingPongClient client = new PingPongClient(serverIP);
 			/* - JFrame Setting - */
 			client.frame.setLocationRelativeTo(null);
 			client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			client.frame.setSize(750, 500);
 			client.frame.setVisible(true);
 			client.frame.setResizable(false);
-			
+
 			client.play();
 			if (!client.wantsToPlayAgain()) {
 				break;
@@ -59,9 +60,9 @@ class PingPongClient {
 		}
 	}
 
-	//*******************//
+	// *******************//
 	// - Time Listener - //
-	//*******************//
+	// *******************//
 	class TimerListener implements ActionListener {
 		private Ball b;
 
@@ -74,10 +75,10 @@ class PingPongClient {
 				b.ballMove();
 				out.println("Ball Move: " + b.getX() + " " + b.getY());
 			} catch (Exception ee) {
-				if (b.getX() > a.getW()-1) 
-					out.println("Player1 get one point");
-				if (b.getX() < 1) 
-					out.println("Player2 get one point");
+				if (b.getX() > a.getW() - 1)
+					out.println("Player 1 get one point");
+				if (b.getX() < 1)
+					out.println("Player 2 get one point");
 				t.stop();
 			}
 			frame.repaint();
@@ -85,31 +86,39 @@ class PingPongClient {
 
 	}
 
-	//*******************************************//
-	// - Client receives response from Server  - //
-	//*******************************************//
+	// *******************************************//
+	// - Client receives response from Server - //
+	// *******************************************//
 	public void play() throws Exception {
 		String response;
 		try {
 			response = in.readLine();
 			if (response.startsWith("WELCOME")) {
 				char mark = response.charAt(8);
+				out.println("NICKNAME: " + mark + nickName);
 				System.out.println(response);
 				frame.setTitle("Ping-Pong Game Player " + mark);
 			}
 			while (true) {
 				response = in.readLine();
-				if (response.startsWith("UP ")) {
+				if (response.startsWith("NickName: 1")) {
+					String name = response.substring(11);
+					a.updatePlayerName1(name);
+					frame.repaint();
+				} else if (response.startsWith("NickName: 2")) {
+					String name = response.substring(11);
+					a.updatePlayerName2(name);
+					frame.repaint();
+				} else if (response.startsWith("UP ")) {
 					String player = response.substring(3);
-					a.moveUp(player);	
-				}else if (response.startsWith("DOWN ")) {
+					a.moveUp(player);
+				} else if (response.startsWith("DOWN ")) {
 					String player = response.substring(5);
-					a.moveDown(player);	
-					
-				}else if (response.equals("Mouse Click")) {
+					a.moveDown(player);
+				} else if (response.equals("Mouse Click")) {
 					Pingpong.message = "";
 					frame.repaint();
-				}else if (response.startsWith("Paddle1 Move: ")) {
+				} else if (response.startsWith("Paddle1 Move: ")) {
 					String paddle1 = response.substring(15, response.length() - 1);
 					String[] tmp = paddle1.split(", ");
 					int[] loc = new int[tmp.length];
@@ -136,16 +145,18 @@ class PingPongClient {
 				} else if (response.startsWith("MESSAGE")) {
 					Pingpong.message = response.substring(8);
 					frame.repaint();
-				} else if(response.startsWith("Player1: ")) {
-					score1 = Integer.parseInt(response.substring(9));
-					a.updateScore1(score1);
-					a.getBall().setX(25);
-					a.getBall().setY(15);
-					Pingpong.message = "Click your mouse to start";
-					frame.repaint();
-				} else if(response.startsWith("Player2: ")) {
-					score2 = Integer.parseInt(response.substring(9));
-					a.updateScore2(score2);
+				} else if (response.startsWith("Player ")) {
+					System.out.println(response);
+					char tmp = response.charAt(7);
+					System.out.println(tmp);
+					if (tmp == '1') {
+						score1 = Integer.parseInt(response.substring(8));
+						a.updateScore1(score1);
+					}
+					if (tmp == '2') {
+						score2 = Integer.parseInt(response.substring(8));
+						a.updateScore2(score2);
+					}
 					a.getBall().setX(25);
 					a.getBall().setY(15);
 					Pingpong.message = "Click your mouse to start";
@@ -154,7 +165,7 @@ class PingPongClient {
 					Pingpong.message = response;
 					frame.repaint();
 					break;
-				}else if (response.equals("You Lose!")) {
+				} else if (response.equals("You Lose!")) {
 					Pingpong.message = response;
 					frame.repaint();
 					break;
@@ -167,9 +178,9 @@ class PingPongClient {
 		}
 	}
 
-	//*************************//
+	// *************************//
 	// - Want to play again? - //
-	//*************************//
+	// *************************//
 	private boolean wantsToPlayAgain() {
 		int response = JOptionPane.showConfirmDialog(frame, "Want to play again?", "Ping-Pong is Fun Fun Fun",
 				JOptionPane.YES_NO_OPTION);
